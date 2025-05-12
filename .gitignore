@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# Virtual environment
+venv/
+env/
+ENV/
+autoagent_env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# FAISS or Chroma vectorstore files (optional)
+index/
+chroma/
+*.faiss
+*.pkl
+
+# VSCode & IDE settings
+.vscode/
+.idea/
+
+# OS-specific
+ehthumbs.db
+Desktop.ini
