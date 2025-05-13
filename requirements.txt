@@ -1,18 +1,22 @@
 streamlit>=1.31.0
-langchain>=0.1.14
-langchain_community>=0.0.24
-openai>=1.10.0
-python-dotenv
 pandas>=2.2.0
 matplotlib>=3.8.0
-tqdm
-faiss_cpu
-PyYAML
-streamlit
-pandas
-matplotlib
 pyyaml
-langchain
-langchain_openai
-streamlit_authenticator
+tqdm
+faiss-cpu
 
+# Langchain ecosystem
+langchain>=0.1.14
+langchain-core>=0.1.33
+langchain-community>=0.0.28
+langchain-openai>=0.0.8
+
+# LLM & API support
+openai>=1.10.0
+python-dotenv
+
+# Streamlit authentication
+streamlit-authenticator
+
+# Wikipedia integration
+wikipedia
