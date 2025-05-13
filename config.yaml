@@ -1,0 +1,20 @@
+credentials:
+  usernames:
+    shiva:
+      email: shiva@example.com
+      name: Shiva
+      password: '$2b$12$8zHnBp0sG5huPIhl2L2F7eBhYQLSLmfJbdGnWEwV7DOHgvYuoarwK'  # shivapass
+    bhave:
+      email: bhave@example.com
+      name: Bhave
+      password: '$2b$12$8zHnBp0sG5huPIhl2L2F7eBhYQLSLmfJbdGnWEwV7DOHgvYuoarwK'  # bhavepass
+
+cookie:
+  expiry_days: 7
+  key: "autoagent-signin"
+  name: "autoagent-cookie"
+
+preauthorized:
+  emails:
+    - shiva@example.com
+    - bhave@example.com

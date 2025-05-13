@@ -1,0 +1,36 @@
+{
+  "history": [
+    [
+      "Summarize the given document ",
+      "AutoAgent is a modular AI system designed to automate knowledge work using a multi-agent architecture. It combines memory, context-awareness, retrieval-augmented generation, and tool orchestration to solve complex tasks. The system is made up of three key agents: the Planner Agent, the Executor Agent, and the Verifier Agent. This design allows AutoAgent to mimic human problem-solving more effectively and enables long-horizon reasoning.",
+      "RAGSearch"
+    ],
+    [
+      "Summarize the given document",
+      "\u2705 Verified Final Answer:\n\n\u2714\ufe0f Summarize the given document \u2192 AutoAgent is a modular AI system designed to automate knowledge work using a multi-agent architecture. It combines memory, context-awareness, retrieval-augmented generation, and tool orchestration to solve complex tasks. The system is made up of three key agents: the Planner Agent, the Executor Agent, and the Verifier Agent. This design allows AutoAgent to mimic human problem-solving more effectively and enables long-horizon reasoning.",
+      "MultiAgent"
+    ]
+  ],
+  "chat_history": [
+    {
+      "role": "human",
+      "content": "Summarize the given document "
+    },
+    {
+      "role": "ai",
+      "content": "AutoAgent is a modular AI system designed to automate knowledge work using a multi-agent architecture. It combines memory, context-awareness, retrieval-augmented generation, and tool orchestration to solve complex tasks. The system is made up of three key agents: the Planner Agent, the Executor Agent, and the Verifier Agent. This design allows AutoAgent to mimic human problem-solving more effectively and enables long-horizon reasoning."
+    },
+    {
+      "role": "human",
+      "content": "Summarize the given document "
+    },
+    {
+      "role": "ai",
+      "content": "AutoAgent is a modular AI system designed to automate knowledge work using a multi-agent architecture. It combines memory, context-awareness, retrieval-augmented generation, and tool orchestration to solve complex tasks. The system is made up of three key agents: the Planner Agent, the Executor Agent, and the Verifier Agent. This design allows AutoAgent to mimic human problem-solving more effectively and enables long-horizon reasoning."
+    }
+  ],
+  "latest_answer": "\u2705 Verified Final Answer:\n\n\u2714\ufe0f Summarize the given document \u2192 AutoAgent is a modular AI system designed to automate knowledge work using a multi-agent architecture. It combines memory, context-awareness, retrieval-augmented generation, and tool orchestration to solve complex tasks. The system is made up of three key agents: the Planner Agent, the Executor Agent, and the Verifier Agent. This design allows AutoAgent to mimic human problem-solving more effectively and enables long-horizon reasoning.",
+  "uploaded_docs": [
+    "docs/shiva_Sample_1.txt"
+  ]
+}
