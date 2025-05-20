@@ -12,7 +12,7 @@ st.set_page_config(page_title="AutoAgent – RAG + LLM Assistant", layout="wide"
 st.title("AutoAgent: Context-Aware AI Assistant")
 
 # --- Simulated User Profiles ---
-user_list = ["User_1", "User_2", "Admin"]
+user_list = ["User", "User_2", "Admin"]
 st.sidebar.header("👤 Select a User")
 selected_user = st.sidebar.selectbox("Choose your profile", user_list)
 
