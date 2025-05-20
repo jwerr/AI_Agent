@@ -20,3 +20,5 @@ streamlit-authenticator
 
 # Wikipedia integration
 wikipedia
+numexpr
+

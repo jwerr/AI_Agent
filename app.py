@@ -3,19 +3,20 @@ from multi_agent.coordinator_agent import plan_and_execute
 import os
 import json
 import pandas as pd
-import matplotlib.pyplot as plt
 from collections import Counter
 
-# --- Page Setup ---
+from dotenv import load_dotenv
+load_dotenv()
+# --- App Configuration ---
 st.set_page_config(page_title="AutoAgent – RAG + LLM Assistant", layout="wide")
-st.title("AutoAgent AI Assistant")
+st.title("AutoAgent: Context-Aware AI Assistant")
 
 # --- Simulated User Profiles ---
 user_list = ["User_1", "User_2", "Admin"]
-st.sidebar.markdown("### 👤 Select User")
-selected_user = st.sidebar.selectbox("User Profile", user_list)
+st.sidebar.header("👤 Select a User")
+selected_user = st.sidebar.selectbox("Choose your profile", user_list)
 
-# --- Persistent History Path ---
+# --- Define History File Path ---
 history_dir = "user_histories"
 os.makedirs(history_dir, exist_ok=True)
 history_path = os.path.join(history_dir, f"{selected_user.lower()}_history.json")
@@ -44,6 +45,7 @@ def save_user_data():
     with open(history_path, "w") as f:
         json.dump(user_data, f, indent=2)
 
+# --- Session State Handling ---
 if "user_profiles" not in st.session_state:
     st.session_state.user_profiles = {}
 
@@ -52,24 +54,22 @@ if selected_user not in st.session_state.user_profiles:
 
 user_data = st.session_state.user_profiles[selected_user]
 
-# --- Project Description ---
-st.markdown("""
-### Project Description
-AutoAgent is a powerful AI assistant that combines **Retrieval-Augmented Generation (RAG)** with **LLM-based reasoning** to automate document understanding, numeric analysis, and smart responses.
+# --- Project Overview ---
+with st.expander("📘 About AutoAgent", expanded=True):
+    st.markdown("""
+    **AutoAgent** is a smart assistant that combines Retrieval-Augmented Generation (RAG) and large language model (LLM) reasoning to automate text document analysis and question answering.
 
-**Key Features:**
-- Upload and analyze `.txt` documents
-- Ask natural language questions
-- Automatically uses RAG, score extraction, or rounding tools
-- Stores full conversation history per user
-- View and download past interactions
-- See usage analytics and visual breakdowns
-""")
+    **Core Features:**
+    - Upload and summarize `.txt` documents
+    - Ask complex questions in natural language
+    - Intelligent agent picks the right tools: RAG, scoring, rounding
+    - Tracks personalized chat history
+    - Download history and explore tool usage analytics
+    """)
 
-# --- Upload Text Document (Multi-file Support) ---
-st.markdown("### 📄 Upload Document(s) ")
-uploaded_files = st.file_uploader("Upload one or more .txt files", type=["txt"], accept_multiple_files=True)
-
+# --- Document Upload ---
+st.markdown("### 📁 Upload Text Documents")
+uploaded_files = st.file_uploader("Upload `.txt` files", type=["txt"], accept_multiple_files=True)
 os.makedirs("docs", exist_ok=True)
 if uploaded_files:
     for file in uploaded_files:
@@ -80,72 +80,69 @@ if uploaded_files:
         if save_path not in user_data["uploaded_docs"]:
             user_data["uploaded_docs"].append(save_path)
     save_user_data()
-    st.success(f"✅ Uploaded {len(uploaded_files)} file(s) successfully!")
+    st.success(f"✅ Uploaded {len(uploaded_files)} file(s) successfully.")
 
-# --- Select File to Use ---
+# --- Document Selection ---
 if user_data.get("uploaded_docs"):
-    selected_doc = st.selectbox("📂 Select a document to use", user_data["uploaded_docs"])
-    st.markdown(f"**Current document:** `{os.path.basename(selected_doc)}`")
+    selected_doc = st.selectbox("📄 Choose a document to analyze", user_data["uploaded_docs"])
+    st.caption(f"Using: `{os.path.basename(selected_doc)}`")
 else:
     selected_doc = None
 
-# --- Input Section ---
-st.markdown("### 💬 Ask a question or give a task")
-user_input = st.text_input("What would you like the agent to do?", "")
-
+# --- Ask a Question ---
+st.markdown("### Ask a Question or Give a Task")
+user_input = st.text_input("e.g., Summarize the document, Extract key points, etc.")
 if user_input.strip().lower() == "document":
     user_input = "Summarize the uploaded document"
 
-# --- Submit ---
-if st.button("Submit") and user_input:
-    with st.spinner("🤖 Multi-agent reasoning..."):
+# --- Submit & Execute ---
+if st.button("Run") and user_input:
+    with st.spinner("Running AI agents..."):
         result = plan_and_execute(user_input)
         user_data["history"].append((user_input, result, "MultiAgent"))
         user_data["latest_answer"] = result
         save_user_data()
 
-# --- Show Latest Answer ---
+# --- Display Answer ---
 if user_data["latest_answer"]:
-    st.markdown("### 🧾 Latest Answer")
-    st.write(user_data["latest_answer"])
+    st.markdown("### Latest Answer")
+    st.success(user_data["latest_answer"])
 
-# --- Sidebar: User Profile & Conversation History ---
+# --- Sidebar: History, Analytics, Controls ---
 with st.sidebar:
-    st.markdown(f"#### 👤 Active User: `{selected_user}`")
+    st.subheader(f"User: {selected_user}")
 
-    st.markdown("### 🗂️ Conversation History")
-    for i, (question, answer, tool) in enumerate(reversed(user_data["history"]), start=1):
-        with st.expander(f"Q{i}: {question[:40]}..."):
+    st.markdown("### 📚 History")
+    for i, (query, answer, tool) in enumerate(reversed(user_data["history"]), 1):
+        with st.expander(f"Q{i}: {query[:50]}"):
             st.markdown(f"**Answer:** {answer}")
-            st.markdown(f"🔧 **Tool Used:** `{tool}`")
+            st.caption(f"🔧 Tool: `{tool}`")
 
-    st.markdown("### 📥 Download History")
-    history_data = json.dumps(user_data["history"], indent=2)
+    st.markdown("### ⬇️ Download History")
     st.download_button(
-        label="📄 Download Conversation History",
-        data=history_data,
-        file_name=f"{selected_user.lower()}_autoagent_history.json",
+        "Download JSON",
+        data=json.dumps(user_data["history"], indent=2),
+        file_name=f"{selected_user}_history.json",
         mime="application/json"
     )
 
-    st.markdown("### ❌ Reset History")
-    if st.button("Clear All History"):
-        user_data["history"] = []
-        user_data["chat_history"] = []
-        user_data["latest_answer"] = ""
-        user_data["uploaded_docs"] = []
+    st.markdown("### 🧹 Clear History")
+    if st.button("Clear All"):
+        user_data.update({
+            "history": [],
+            "chat_history": [],
+            "latest_answer": "",
+            "uploaded_docs": []
+        })
         save_user_data()
-        st.success("🧹 History cleared successfully!")
+        st.success("✅ History cleared.")
 
     st.markdown("---")
-    st.markdown("### 📊 Usage Analytics")
+    st.markdown("### 📊 Tool Usage Stats")
     if user_data["history"]:
         df = pd.DataFrame(user_data["history"], columns=["Query", "Answer", "Tool"])
-        tool_counts = Counter([item[2] for item in user_data["history"]])
-        st.markdown("**Tool Usage**")
+        tool_counts = Counter(df["Tool"])
         st.bar_chart(pd.DataFrame.from_dict(tool_counts, orient='index', columns=["Usage"]))
-
-        st.markdown("**Query Count**")
-        st.write(f"Total queries submitted: {len(user_data['history'])}")
+        st.caption(f"Total Queries: {len(user_data['history'])}")
     else:
-        st.markdown("No analytics yet. Ask a question to get started.")
+        st.info("Submit a query to view analytics.")
